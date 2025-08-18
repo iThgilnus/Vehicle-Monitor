@@ -1,0 +1,146 @@
+<div class="vehicles-container">
+  <div class="vehicles-header">
+    <h1>Vehicles</h1>
+  </div>
+
+  <div class="filters-section">
+    <!-- Search box -->
+    <div class="search-box">
+      <mat-icon>search</mat-icon>
+      <input 
+        type="text" 
+        placeholder="Search by license plate, type, or location..." 
+        (input)="searchVehicles($event)"
+      >
+    </div>
+
+    <!-- Time period filter -->
+    <div class="time-filter">
+      <div class="date-input-group">
+        <label>From:</label>
+        <input 
+          type="datetime-local" 
+          [(ngModel)]="startDate" 
+          (change)="applyFilters()"
+        >
+      </div>
+      <div class="date-input-group">
+        <label>To:</label>
+        <input 
+          type="datetime-local" 
+          [(ngModel)]="endDate" 
+          (change)="applyFilters()"
+        >
+      </div>
+      <button class="clear-dates-btn" (click)="clearDateFilters()">
+        <mat-icon>clear</mat-icon>
+      </button>
+    </div>
+
+    <!-- Additional filters -->
+    <div class="additional-filters">
+      <!-- Vehicle type filter -->
+      <div class="select-filter">
+        <label>Type:</label>
+        <select [(ngModel)]="selectedVehicleType" (change)="applyFilters()">
+          <option value="">All Types</option>
+          <option value="Car">Car</option>
+          <option value="Motorcycle">Motorcycle</option>
+        </select>
+      </div>
+
+      <!-- Gate filter -->
+      <div class="select-filter">
+        <label>Gate:</label>
+        <select [(ngModel)]="selectedGate" (change)="applyFilters()">
+          <option value="">All Gates</option>
+          <option *ngFor="let gate of gateLocations" [value]="gate">{{gate}}</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Status filters -->
+    <div class="status-filters">
+      <button 
+        class="filter-button" 
+        [class.active]="filterStatus === 'all'"
+        (click)="filterByStatus('all')">
+        All
+      </button>
+      <button 
+        class="filter-button approved" 
+        [class.active]="filterStatus === 'inside'"
+        (click)="filterByStatus('inside')">
+        In
+      </button>
+      <button 
+        class="filter-button warning" 
+        [class.active]="filterStatus === 'left'"
+        (click)="filterByStatus('left')">
+        Left
+      </button>
+    </div>
+    
+    <!-- Clear all filters button -->
+    <button class="clear-all-filters-btn" (click)="clearAllFilters()">
+      <mat-icon>filter_alt_off</mat-icon>
+      Clear Filters
+    </button>
+  </div>
+
+  <div class="vehicles-table-container">
+    <table class="vehicles-table">
+      <thead>
+        <tr>
+          <th>License Plate</th>
+          <th>Vehicle Type</th>
+          <th>Entry Date/Time</th>
+          <th>Exit Date/Time</th>
+          <th>Location</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let vehicle of filteredVehicles">
+          <td class="license-plate">
+            <strong>{{vehicle.license_plate}}</strong>
+          </td>
+          <td>{{vehicle.vehicle_type}}</td>
+          <td>{{formatDate(vehicle.entry_time)}} {{formatTime(vehicle.entry_time)}}</td>
+          <td>
+            <span *ngIf="vehicle.exit_time">{{formatDate(vehicle.exit_time)}} {{formatTime(vehicle.exit_time)}}</span>
+            <span *ngIf="!vehicle.exit_time">-</span>
+          </td>
+          <td>{{vehicle.location}}</td>
+          <td>
+            <span class="status-badge" [class.approved]="vehicle.status === 'Inside'" [class.warning]="vehicle.status === 'Left'">
+              {{vehicle.status}}
+            </span>
+          </td>
+          <td class="actions-cell">
+            <button class="icon-button" (click)="viewVehicleDetails(vehicle)">
+              <mat-icon>visibility</mat-icon>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="no-results" *ngIf="filteredVehicles.length === 0">
+      <mat-icon>search_off</mat-icon>
+      <p>No vehicles found matching your search criteria.</p>
+    </div>
+  </div>
+
+  <!-- Phân trang -->
+  <div class="pagination" *ngIf="totalPages > 1">
+    <button class="pagination-button" (click)="prevPage()" [disabled]="currentPage === 1">
+      <mat-icon>chevron_left</mat-icon>
+    </button>
+    <span>Page {{currentPage}} of {{totalPages}}</span>
+    <button class="pagination-button" (click)="nextPage()" [disabled]="currentPage === totalPages">
+      <mat-icon>chevron_right</mat-icon>
+    </button>
+  </div>
+</div>

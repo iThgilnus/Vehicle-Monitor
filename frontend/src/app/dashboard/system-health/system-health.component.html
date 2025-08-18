@@ -1,0 +1,139 @@
+<div class="system-health-container">
+  <div class="header-section">
+    <h1>System Health</h1>
+    <div class="header-actions">
+      <button class="refresh-button" (click)="fetchSystemStatus(true)">
+        <mat-icon>refresh</mat-icon>
+        Refresh
+      </button>
+    </div>
+  </div>
+
+  <div class="metrics-grid">
+    <div class="metric-card" *ngFor="let metric of metrics" [ngClass]="getStatusClass(metric.status)">
+      <div class="metric-icon">
+        <mat-icon>{{metric.icon}}</mat-icon>
+      </div>
+      <div class="metric-details">
+        <h3>{{metric.name}}</h3>
+        <div class="metric-value">
+          <span class="value">{{metric.value}}</span>
+          <span class="unit">{{metric.unit}}</span>
+        </div>
+        <div class="status-indicator">
+          <span class="status-dot" [ngClass]="getStatusClass(metric.status)"></span>
+          <span class="status-text">{{metric.status | titlecase}}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="health-sections">
+    <div class="secondary-sections">
+      <div class="gpu-section" *ngIf="gpuInfo && gpuInfo.length > 0">
+        <h2>GPU Status</h2>
+        <div class="gpu-cards-container">
+          <div class="gpu-card" *ngFor="let gpu of gpuInfo">
+            <div class="gpu-card-header">
+              <mat-icon>developer_board</mat-icon>
+              <h3>{{gpu.name}}</h3>
+            </div>
+            
+            <div class="gpu-metrics">
+              <div class="gpu-metric" [ngClass]="getStatusClass(gpu.usage.status.toLowerCase())">
+                <div class="gpu-metric-name">Usage</div>
+                <div class="gpu-metric-value">{{gpu.usage.value}}%</div>
+                <div class="status-indicator">
+                  <span class="status-dot" [ngClass]="getStatusClass(gpu.usage.status.toLowerCase())"></span>
+                  <span>{{gpu.usage.status}}</span>
+                </div>
+              </div>
+              
+              <div class="gpu-metric" [ngClass]="getStatusClass(gpu.memory.status.toLowerCase())">
+                <div class="gpu-metric-name">Memory</div>
+                <div class="gpu-metric-value">
+                  {{gpu.memory.used}} / {{gpu.memory.total}} MB ({{gpu.memory.usage_percent}}%)
+                </div>
+                <div class="status-indicator">
+                  <span class="status-dot" [ngClass]="getStatusClass(gpu.memory.status.toLowerCase())"></span>
+                  <span>{{gpu.memory.status}}</span>
+                </div>
+              </div>
+              
+              <div class="gpu-metric" [ngClass]="getStatusClass(gpu.temperature.status.toLowerCase())">
+                <div class="gpu-metric-name">Temperature</div>
+                <div class="gpu-metric-value">{{gpu.temperature.value}}°C</div>
+                <div class="status-indicator">
+                  <span class="status-dot" [ngClass]="getStatusClass(gpu.temperature.status.toLowerCase())"></span>
+                  <span>{{gpu.temperature.status}}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="issues-section">
+        <h2>Recent Issues</h2>
+        <div class="issues-list">
+          <div class="issue-item" *ngFor="let issue of recentIssues">
+            <div class="issue-icon">
+              <mat-icon>error_outline</mat-icon>
+            </div>
+            <div class="issue-content">
+              {{issue}}
+            </div>
+          </div>
+          <div class="no-issues" *ngIf="recentIssues.length === 0">
+            <mat-icon>check_circle</mat-icon>
+            <p>No recent issues to report.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="services-section">
+      <h2>Services Status</h2>
+      <div class="table-container">
+        <table class="services-table">
+          <thead>
+            <tr>
+              <th>Service</th>
+              <th>Status</th>
+              <th>Uptime</th>
+              <th>Last Updated</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let service of services">
+              <td>{{service.name}}</td>
+              <td>
+                <span class="status-badge" [ngClass]="getStatusClass(service.status)">
+                  {{service.status | titlecase}}
+                </span>
+              </td>
+              <td>{{formatUptime(service.uptime)}}</td>
+              <td>{{service.lastUpdated | date:'medium'}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="system-actions">
+    <button class="action-button warning">
+      <mat-icon>restart_alt</mat-icon>
+      Restart Services
+    </button>
+    <button class="action-button">
+      <mat-icon>backup</mat-icon>
+      Create Backup
+    </button>
+    <button class="action-button">
+      <mat-icon>notifications</mat-icon>
+      Configure Alerts
+    </button>
+  </div>
+</div>
+

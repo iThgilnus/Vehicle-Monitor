@@ -1,0 +1,90 @@
+<div class="cameras-container">
+    <div class="cameras-header">
+      <h1>Cameras</h1>
+      <div class="action-buttons">
+        <button class="add-button">
+          <mat-icon>add</mat-icon>
+          Add Camera
+        </button>
+      </div>
+    </div>
+  
+    <div class="filters-row">
+      <div class="search-box">
+        <mat-icon>search</mat-icon>
+        <input 
+          type="text" 
+          placeholder="Search by name or IP address..." 
+          (input)="searchCameras($event)"
+        >
+      </div>
+  
+      <div class="status-filters">
+        <button 
+          class="filter-button" 
+          [class.active]="filterStatus === 'all'"
+          (click)="filterByStatus('all')">
+          All
+        </button>
+        <button 
+          class="filter-button approved" 
+          [class.active]="filterStatus === 'active'"
+          (click)="filterByStatus('active')">
+          Active
+        </button>
+        <button 
+          class="filter-button warning" 
+          [class.active]="filterStatus === 'maintenance'"
+          (click)="filterByStatus('maintenance')">
+          Maintenance
+        </button>
+        <button 
+          class="filter-button denied" 
+          [class.active]="filterStatus === 'disconnected'"
+          (click)="filterByStatus('disconnected')">
+          Disconnected
+        </button>
+      </div>
+    </div>
+  
+    <div class="camera-grid">
+      <div class="camera-card" *ngFor="let camera of filteredCameras">
+        <div class="camera-preview">
+          <div class="camera-feed-placeholder">
+            <mat-icon>videocam</mat-icon>
+          </div>
+          <div class="camera-status" [ngClass]="camera.status.toLowerCase()">
+            <span class="status-indicator"></span>
+            {{camera.status}}
+          </div>
+        </div>
+  
+        <div class="camera-info">
+          <h3>{{camera.camera_name}}</h3>
+          <div class="camera-details">
+            <div class="detail-row">
+              <span class="detail-label">IP Address:</span>
+              <span class="detail-value">{{camera.ip_address}}</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Last Sync:</span>
+              <span class="detail-value" [ngClass]="getLastSyncStatus(camera)">
+                {{formatTime(camera.last_sync)}} {{formatDate(camera.last_sync)}}
+              </span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Gate:</span>
+              <span class="detail-value">{{camera.gate_id || 'None'}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <div class="no-results" *ngIf="filteredCameras.length === 0">
+      <mat-icon>videocam_off</mat-icon>
+      <p>No cameras found matching your search criteria.</p>
+    </div>
+  </div>
+  
+  

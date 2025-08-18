@@ -1,0 +1,19 @@
+<div class="video-container">
+  <video #videoElement autoplay playsinline muted></video>
+  <div *ngIf="isLoading" class="loading-overlay">
+    <p>Connecting to video stream...</p>
+  </div>
+  <div *ngIf="errorMessage" class="error-overlay">
+    <p>{{ errorMessage }}</p>
+    <button (click)="reconnect()">Retry</button>
+  </div>
+  <div *ngIf="detections.length > 0" class="detections-container">
+    <h3>Detections ({{ lastUpdated | date:'mediumTime' }}):</h3>
+    <ul>
+      <li *ngFor="let detection of detections">
+        {{ detection.label }} ({{ detection.confidence | number:'1.2-2' }})
+        at [{{ detection.box.join(', ') }}]
+      </li>
+    </ul>
+  </div>
+</div>

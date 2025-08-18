@@ -1,0 +1,435 @@
+// Variables for color scheme
+$background-color: #151921;
+$sidebar-color: #1a1f2c;
+$active-item-color: #1e293b;
+$text-color: #fff;
+$border-color: #e2e8f0;
+$card-bg: rgba(255, 255, 255, 0.075);
+$hover-color: #64748b;
+$warning-color: #f59e0b;
+$notification-color: #dc2626;
+$active-control-color: #2563eb;
+$approved-color: #10b981;
+$denied-color: #ef4444;
+
+.cameras-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  width: 100%;
+  max-width: 1600px;
+  margin: 0 auto;
+
+  .cameras-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+
+    h1 {
+      font-size: 1.75rem;
+      font-weight: 600;
+      margin: 0;
+      color: $text-color;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 1rem;
+
+      .add-button {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        background-color: $active-control-color;
+        color: white;
+        border: none;
+        border-radius: 0.5rem;
+        padding: 0.75rem 1.25rem;
+        font-size: 0.875rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+        &:hover {
+          background-color: $active-control-color;
+          transform: translateY(-2px);
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+        }
+
+        &:active {
+          transform: translateY(0);
+          box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        mat-icon {
+          font-size: 1.25rem;
+          height: 1.25rem;
+          width: 1.25rem;
+        }
+      }
+    }
+  }
+
+  .filters-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+
+    .search-box {
+      display: flex;
+      align-items: center;
+      background-color: $card-bg;
+      border-radius: 0.5rem;
+      padding: 0.75rem 1rem;
+      flex-grow: 1;
+      max-width: 500px;
+      transition: all 0.2s;
+      border: 1px solid transparent;
+
+      &:focus-within {
+        border-color: rgba($active-control-color, 0.5);
+        box-shadow: 0 0 0 2px rgba($active-control-color, 0.1);
+      }
+
+      mat-icon {
+        color: rgba($text-color, 0.6);
+        margin-right: 0.75rem;
+      }
+
+      input {
+        background: transparent;
+        border: none;
+        outline: none;
+        color: $text-color;
+        width: 100%;
+        font-size: 0.95rem;
+
+        &::placeholder {
+          color: rgba($text-color, 0.6);
+        }
+      }
+    }
+
+    .status-filters {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+
+      .filter-button {
+        background-color: $card-bg;
+        border: none;
+        border-radius: 0.5rem;
+        padding: 0.75rem 1rem;
+        color: $text-color;
+        cursor: pointer;
+        transition: all 0.2s;
+        font-weight: 500;
+
+        &:hover {
+          background-color: rgba($hover-color, 0.2);
+        }
+
+        &.active {
+          background-color: $active-item-color;
+          border-left: 3px solid $active-control-color;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        &.approved.active {
+          border-left-color: $approved-color;
+        }
+
+        &.warning.active {
+          border-left-color: $warning-color;
+        }
+
+        &.denied.active {
+          border-left-color: $denied-color;
+        }
+      }
+    }
+  }
+
+  .camera-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 1.5rem;
+    width: 100%;
+    
+    .camera-card {
+      background-color: $card-bg;
+      border-radius: 0.75rem;
+      overflow: hidden;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      transition: transform 0.2s, box-shadow 0.2s;
+      border: 1px solid rgba($border-color, 0.05);
+        
+      &:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+      }
+      
+      .camera-preview {
+        position: relative;
+        height: 200px;
+        background-color: $card-bg;
+        
+        .camera-feed-placeholder {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 100%;
+          height: 100%;
+          
+          mat-icon {
+            font-size: 3.5rem;
+            height: 3.5rem;
+            width: 3.5rem;
+            color: rgba($text-color, 0.3);
+          }
+        }
+        
+        .camera-status {
+          position: absolute;
+          top: 1rem;
+          left: 1rem;
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          padding: 0.35rem 0.85rem;
+          border-radius: 50px;
+          background-color: rgba(0,0,0,0.5);
+          font-size: 0.8rem;
+          font-weight: 500;
+          backdrop-filter: blur(4px);
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+          
+          .status-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            box-shadow: 0 0 4px currentColor;
+          }
+          
+          &.active {
+            color: $approved-color;
+            .status-indicator {
+              background-color: $approved-color;
+            }
+          }
+          
+          &.maintenance {
+            color: $warning-color;
+            .status-indicator {
+              background-color: $warning-color;
+            }
+          }
+          
+          &.disconnected {
+            color: $denied-color;
+            .status-indicator {
+              background-color: $denied-color;
+            }
+          }
+        }
+        
+        .camera-actions {
+          position: absolute;
+          bottom: 1rem;
+          right: 1rem;
+          display: flex;
+          gap: 0.5rem;
+          
+          .icon-button {
+            background-color: rgba($active-control-color, 0.8);
+            border: none;
+            color: white;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 0.375rem;
+            transition: all 0.2s;
+            backdrop-filter: blur(4px);
+            
+            &:hover {
+              background-color: $active-control-color;
+              transform: translateY(-2px);
+            }
+            
+            &:active {
+              transform: translateY(0);
+            }
+            
+            &.delete {
+              background-color: rgba($denied-color, 0.8);
+              
+              &:hover {
+                background-color: $denied-color;
+              }
+            }
+          }
+        }
+      }
+      
+      .camera-info {
+        padding: 1.5rem;
+        
+        h3 {
+          font-size: 1.2rem;
+          font-weight: 600;
+          margin-bottom: 1.25rem;
+          color: $text-color;
+        }
+        
+        .camera-details {
+          display: flex;
+          flex-direction: column;
+          gap: 0.85rem;
+          
+          .detail-row {
+            display: flex;
+            font-size: 0.95rem;
+            
+            .detail-label {
+              min-width: 100px;
+              color: rgba($text-color, 0.7);
+              font-weight: 500;
+            }
+            
+            .detail-value {
+              color: $text-color;
+              
+              &.recent {
+                color: $approved-color;
+                font-weight: 500;
+              }
+              
+              &.warning {
+                color: $warning-color;
+                font-weight: 500;
+              }
+              
+              &.error {
+                color: $approved-color;
+                font-weight: 500;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  .no-results {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem 2rem;
+    gap: 1.5rem;
+    color: rgba($text-color, 0.6);
+    background-color: $card-bg;
+    border-radius: 0.75rem;
+    margin-top: 1rem;
+    border: 1px dashed rgba($border-color, 0.2);
+
+    mat-icon {
+      font-size: 4rem;
+      height: 4rem;
+      width: 4rem;
+      opacity: 0.6;
+    }
+
+    p {
+      font-size: 1.1rem;
+      text-align: center;
+    }
+  }
+}
+
+// Responsive styles
+@media screen and (max-width: 1200px) {
+  .cameras-container {
+    .camera-grid {
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    }
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .cameras-container {
+    padding: 1.25rem;
+    
+    .filters-row {
+      flex-direction: column;
+      align-items: stretch;
+
+      .search-box {
+        max-width: none;
+      }
+
+      .status-filters {
+        justify-content: space-between;
+        
+        .filter-button {
+          flex: 1;
+          text-align: center;
+          padding: 0.75rem 0.5rem;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .cameras-container {
+    padding: 1rem;
+
+    .cameras-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1rem;
+      margin-bottom: 1.25rem;
+
+      .action-buttons {
+        width: 100%;
+        
+        .add-button {
+          width: 100%;
+          justify-content: center;
+        }
+      }
+    }
+    
+    .camera-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .cameras-container {
+    padding: 0.75rem;
+    
+    .filters-row {
+      .status-filters {
+        .filter-button {
+          font-size: 0.8rem;
+          padding: 0.6rem 0.4rem;
+        }
+      }
+    }
+    
+    .camera-card {
+      .camera-preview {
+        height: 180px;
+      }
+    }
+  }
+}
+

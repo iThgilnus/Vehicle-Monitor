@@ -1,0 +1,202 @@
+// Variables for color scheme
+$background-color: #151921;
+$sidebar-color: #1a1f2c;
+$active-item-color: #1e293b;
+$text-color: #fff;
+$border-color: #e2e8f0;
+$hover-color: #64748b;
+$active-control-color: #2563eb;
+
+.sidebar {
+  background-color: $sidebar-color;
+  color: $text-color;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  border-right: 1px solid rgba($border-color, 0.1);
+  transition: all 0.3s ease;
+  width: 250px;
+  overflow-x: hidden;
+  height: calc(100vh - 50px);
+  border-radius: 5px;
+  
+  // Make sidebar fixed
+  position: fixed;
+  top: 5px;
+  left: 5px;
+  z-index: 100;
+  
+  &.collapsed {
+    width: 70px;
+    padding: 1.5rem 0.75rem;
+  }
+
+  .logo-container {
+    display: flex;
+    align-items: center;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid rgba($border-color, 0.1);
+    margin-bottom: 1rem;
+
+    .logo {
+      width: 40px;
+      height: 40px;
+      margin-right: 1rem;
+    }
+
+    .logo-text {
+      font-size: 1.25rem;
+      font-weight: 600;
+      flex-grow: 1;
+      white-space: nowrap;
+    }
+
+    .toggle-sidebar {
+      background: transparent;
+      border: none;
+      color: $text-color;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.25rem;
+      border-radius: 0.25rem;
+      transition: all 0.2s ease;
+      
+      &:hover {
+        background-color: rgba($hover-color, 0.2);
+      }
+    }
+  }
+
+  .menu-sections {
+    flex-grow: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+
+    .section-title {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: rgba($text-color, 0.6);
+      padding: 0.5rem 0;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .menu-items {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+
+      .menu-item {
+        display: flex;
+        align-items: center;
+        padding: 0.75rem;
+        cursor: pointer;
+        border-radius: 0.5rem;
+        border-left: 3px solid transparent;
+
+        &:hover {
+          background-color: rgba($hover-color, 0.1);
+        }
+
+        &.active {
+          background-color: $active-item-color;
+          border-left-color: $active-control-color;
+        }
+
+        .menu-icon {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin-right: 1rem;
+          min-width: 24px;
+        }
+
+        .menu-text {
+          flex-grow: 1;
+          font-size: 0.9rem;
+          white-space: nowrap;
+        }
+
+        .badge {
+          background-color: rgba($text-color, 0.1);
+          color: $text-color;
+          border-radius: 10px;
+          padding: 0.15rem 0.5rem;
+          font-size: 0.75rem;
+          min-width: 20px;
+          text-align: center;
+        }
+      }
+    }
+  }
+
+  .sidebar-footer {
+    padding-top: 1rem;
+    border-top: 1px solid rgba($border-color, 0.1);
+
+    .user-profile {
+      display: flex;
+      align-items: center;
+      
+      .avatar {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background-color: rgba($text-color, 0.1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 0.75rem;
+      }
+
+      .user-info {
+        .user-name {
+          font-weight: 500;
+          font-size: 0.9rem;
+        }
+
+        .user-role {
+          font-size: 0.75rem;
+          color: rgba($text-color, 0.6);
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .sidebar {
+    width: 70px;
+    padding: 1.5rem 0.75rem;
+    
+    &.collapsed {
+      width: 0;
+      padding: 0;
+      overflow: hidden;
+      left: -70px; // Move off-screen when collapsed on mobile
+    }
+    
+    .logo-container {
+      justify-content: center;
+      padding-bottom: 1rem;
+      
+      .logo {
+        margin-right: 0;
+      }
+    }
+    
+    .menu-sections .menu-items .menu-item {
+      justify-content: center;
+      
+      .menu-icon {
+        margin-right: 0;
+      }
+    }
+  }
+}

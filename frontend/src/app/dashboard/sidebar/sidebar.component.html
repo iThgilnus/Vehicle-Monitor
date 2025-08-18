@@ -1,0 +1,40 @@
+<aside class="sidebar" [class.collapsed]="isSidebarCollapsed">
+  <div class="logo-container">
+    <img src="assets/logo.png" alt="Logo" class="logo">
+    <span class="logo-text" *ngIf="!isSidebarCollapsed">Vehicle Monitor</span>
+  </div>
+
+  <!-- Menu Sections -->
+  <div class="menu-sections">
+    <div *ngFor="let section of menuSections" class="menu-section">
+      <h3 class="section-title" *ngIf="!isSidebarCollapsed">{{section.title}}</h3>
+      
+      <ul class="menu-items">
+        <li *ngFor="let item of section.items" 
+            class="menu-item" 
+            [class.active]="selectedMenuItem === item.title"
+            (click)="selectMenuItem(item)">
+          <div class="menu-icon">
+            <mat-icon>{{item.icon}}</mat-icon>
+          </div>
+          <span class="menu-text" *ngIf="!isSidebarCollapsed">{{item.title}}</span>
+          <div class="badge" *ngIf="item.badge && !isSidebarCollapsed">
+            {{item.badge.count}}
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="sidebar-footer" *ngIf="!isSidebarCollapsed">
+    <div class="user-profile">
+      <div class="avatar">
+        <mat-icon>account_circle</mat-icon>
+      </div>
+      <div class="user-info">
+        <div class="user-name">Admin User</div>
+        <div class="user-role">System Administrator</div>
+      </div>
+    </div>
+  </div>
+</aside>

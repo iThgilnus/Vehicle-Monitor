@@ -1,0 +1,252 @@
+<div class="reports-container">
+  <div class="reports-header">
+    <h1>Reports & Analytics</h1>
+    <div class="action-buttons" *ngIf="selectedReport">
+      <button class="export-button" (click)="exportReport('pdf')">
+        <mat-icon>picture_as_pdf</mat-icon>
+        Export as PDF
+      </button>
+      <button class="export-button excel" (click)="exportReport('excel')">
+        <mat-icon>table_chart</mat-icon>
+        Export as Excel
+      </button>
+    </div>
+  </div>
+
+  <div class="reports-content">
+    <!-- Sidebar navigation -->
+    <div class="reports-sidebar">
+      <div class="sidebar-section">
+        <h3>Report Types</h3>
+        <div class="report-types">
+          <div 
+            *ngFor="let reportType of reportTypes" 
+            class="report-type-item"
+            [class.active]="selectedReportType === reportType.id"
+            (click)="changeReportType(reportType.id)">
+            <mat-icon>{{reportType.icon}}</mat-icon>
+            <span>{{reportType.label}}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Date range selector for custom reports -->
+      <div class="sidebar-section" *ngIf="selectedReportType === 'custom'">
+        <h3>Custom Range</h3>
+        <form [formGroup]="dateRangeForm" class="date-range-form">
+          <div class="form-field">
+            <label>Start Date</label>
+            <input 
+              type="date" 
+              formControlName="startDate"
+              class="date-input">
+          </div>
+          <div class="form-field">
+            <label>End Date</label>
+            <input 
+              type="date" 
+              formControlName="endDate"
+              class="date-input">
+          </div>
+          <div *ngIf="dateRangeForm.hasError('invalidRange')" class="date-error">
+            End date must be after start date
+          </div>
+          <button 
+            type="button" 
+            class="generate-button"
+            [disabled]="dateRangeForm.invalid"
+            (click)="generateReport()">
+            Generate Report
+          </button>
+        </form>
+      </div>
+
+      <!-- List of available reports -->
+      <div class="sidebar-section">
+        <h3>Recent Reports</h3>
+        <div class="recent-reports">
+          <div 
+            *ngFor="let report of reports" 
+            class="recent-report-item"
+            [class.active]="selectedReport?.report_id === report.report_id"
+            (click)="selectedReport = report">
+            <div class="report-icon">
+              <mat-icon>description</mat-icon>
+            </div>
+            <div class="report-info">
+              <div class="report-title">{{report.report_type}} Report</div>
+              <div class="report-date">
+                {{formatDate(report.date_range.start)}} - {{formatDate(report.date_range.end)}}
+              </div>
+            </div>
+          </div>
+          
+          <!-- Loading state indicator -->
+          <div class="loading-state" *ngIf="isLoading">
+            <mat-icon class="spin">sync</mat-icon>
+            <span>Loading data...</span>
+          </div>
+          
+          <!-- No reports state -->
+          <div class="empty-state" *ngIf="!isLoading && reports.length === 0">
+            <mat-icon>info</mat-icon>
+            <span>No reports available</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main report content -->
+    <div class="report-details" *ngIf="selectedReport" #reportContainer>
+      <div class="report-header">
+        <h2>{{selectedReport.report_type}} Vehicle Report</h2>
+        <div class="report-period">
+          <mat-icon>date_range</mat-icon>
+          <span>{{formatDate(selectedReport.date_range.start)}} - {{formatDate(selectedReport.date_range.end)}}</span>
+        </div>
+      </div>
+
+      <!-- Key metrics summary -->
+      <div class="report-stats">
+        <div class="stat-card">
+          <div class="stat-value">{{selectedReport.vehicle_count}}</div>
+          <div class="stat-label">Total Vehicles</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">{{formatPercentage(selectedReport.parkingOccupancyRate)}}</div>
+          <div class="stat-label">Occupancy Rate</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">{{formatHours(selectedReport.averageParkingDuration)}}</div>
+          <div class="stat-label">Avg. Stay Duration</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">{{getStatusCount('Inside')}}</div>
+          <div class="stat-label">Currently Inside</div>
+        </div>
+      </div>
+
+      <!-- Vehicle type distribution chart -->
+      <div class="report-chart-section">
+        <h3>Vehicle Type Distribution</h3>
+        <div class="chart-container">
+          <!-- Pie chart for vehicle types -->
+          <div class="pie-chart-placeholder">
+            <div class="chart-legend">
+              <div *ngFor="let item of selectedReport.vehicleTypeDistribution; let i = index" class="legend-item">
+                <div class="legend-color" [style.backgroundColor]="getChartColorForIndex(i)"></div>
+                <div class="legend-text">
+                  {{item.type}} ({{item.count}}) - {{formatPercentage(item.percentage)}}
+                </div>
+              </div>
+            </div>
+            <svg class="pie-chart" viewBox="0 0 100 100">
+              <path *ngFor="let item of selectedReport.vehicleTypeDistribution; let i = index"
+                    [attr.d]="createPieSegmentPath(calculatePieSegment(i).startAngle, calculatePieSegment(i).endAngle)"
+                    [attr.fill]="getChartColorForIndex(i)">
+              </path>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Status distribution chart -->
+      <div class="report-chart-section">
+        <h3>Vehicle Status</h3>
+        <div class="chart-container status-chart">
+          <!-- Status distribution visualization -->
+          <div class="status-distribution">
+            <div class="status-bar-container">
+              <div *ngFor="let status of selectedReport.statusDistribution; let i = index"
+                   class="status-bar-segment"
+                   [style.width.%]="status.percentage"
+                   [style.backgroundColor]="status.status === 'Inside' ? '#10b981' : '#f59e0b'">
+              </div>
+            </div>
+            <div class="status-labels">
+              <div *ngFor="let status of selectedReport.statusDistribution" class="status-label">
+                <span class="status-indicator" 
+                      [style.backgroundColor]="status.status === 'Inside' ? '#10b981' : '#f59e0b'"></span>
+                {{status.status}}: {{status.count}} ({{formatPercentage(status.percentage)}})
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Peak Hours Activity -->
+      <div class="report-chart-section">
+        <h3>Peak Entry Hours</h3>
+        <div class="chart-container">
+          <!-- Bar chart for peak hours -->
+          <div class="bar-chart-placeholder">
+            <div class="bar-chart">
+              <div *ngFor="let hour of selectedReport.peakHours" 
+                   class="bar" 
+                   [style.height.%]="calculateBarHeight(hour.count, selectedReport.peakHours)">
+                <div class="bar-label">{{hour.count}}</div>
+                <div class="hour-label">{{hour.hour}}:00</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Location distribution -->
+      <div class="report-table-section">
+        <h3>Parking Locations</h3>
+        <table class="report-table">
+          <thead>
+            <tr>
+              <th>Location</th>
+              <th>Vehicle Count</th>
+              <th>Percentage</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let location of selectedReport.locationDistribution">
+              <td>{{location.location}}</td>
+              <td>{{location.count}}</td>
+              <td>{{formatPercentage(location.percentage)}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Vehicle Type Details Table -->
+      <div class="report-table-section">
+        <h3>Vehicle Type Details</h3>
+        <table class="report-table">
+          <thead>
+            <tr>
+              <th>Vehicle Type</th>
+              <th>Count</th>
+              <th>Percentage</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let detail of selectedReport.vehicleTypeDistribution">
+              <td>{{detail.type}}</td>
+              <td>{{detail.count}}</td>
+              <td>{{formatPercentage(detail.percentage)}}</td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td><strong>Total</strong></td>
+              <td><strong>{{selectedReport.vehicle_count}}</strong></td>
+              <td><strong>100%</strong></td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+    
+    <!-- No Report Selected State -->
+    <div class="no-report-state" *ngIf="!isLoading && !selectedReport">
+      <mat-icon>assignment</mat-icon>
+      <h3>No Report Selected</h3>
+      <p>Select a report type from the sidebar or generate a custom report to view analytics.</p>
+    </div>
+  </div>
+</div>

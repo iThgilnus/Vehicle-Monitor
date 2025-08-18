@@ -1,0 +1,317 @@
+// Variables for color scheme
+$background-color: #151921;
+$sidebar-color: #1a1f2c;
+$active-item-color: #1e293b;
+$text-color: #fff;
+$border-color: #e2e8f0;
+$card-bg: rgba(255, 255, 255, 0.075);
+$hover-color: #64748b;
+$warning-color: #f59e0b;
+$notification-color: #dc2626;
+$active-control-color: #2563eb;
+$approved-color: #10b981;
+$denied-color: #ef4444;
+
+.settings-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1rem;
+  width: 100%;
+
+  .settings-header {
+    h1 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin: 0;
+      color: $text-color;
+    }
+  }
+
+  .settings-content {
+    display: grid;
+    grid-template-columns: 250px 1fr;
+    gap: 1.5rem;
+
+    .settings-sidebar {
+      .settings-tabs {
+        background-color: $card-bg;
+        border-radius: 0.5rem;
+        overflow: hidden;
+
+        .tab-item {
+          display: flex;
+          align-items: center;
+          gap: 0.75rem;
+          padding: 1rem 1.25rem;
+          cursor: pointer;
+          transition: all 0.2s ease;
+
+          &:hover {
+            background-color: rgba($hover-color, 0.1);
+          }
+
+          &.active {
+            background-color: $active-item-color;
+            border-left: 3px solid $active-control-color;
+
+            mat-icon {
+              color: $active-control-color;
+            }
+          }
+
+          mat-icon {
+            font-size: 1.25rem;
+            width: 1.25rem;
+            height: 1.25rem;
+          }
+
+          span {
+            font-size: 1rem;
+          }
+        }
+      }
+    }
+
+    .settings-panel {
+      background-color: $card-bg;
+      border-radius: 0.5rem;
+      padding: 1.5rem;
+
+      .settings-section {
+        h2 {
+          font-size: 1.25rem;
+          font-weight: 600;
+          margin-bottom: 0.5rem;
+          color: $text-color;
+        }
+
+        .setting-description {
+          color: rgba($text-color, 0.7);
+          font-size: 0.9rem;
+          margin-bottom: 2rem;
+        }
+
+        .settings-form {
+          display: flex;
+          flex-direction: column;
+          gap: 1.5rem;
+
+          .form-row {
+            display: flex;
+            gap: 1rem;
+
+            &.two-columns {
+              display: grid;
+              grid-template-columns: 1fr 1fr;
+            }
+
+            &.manual-backup {
+              margin: 1rem 0;
+            }
+
+            .form-group {
+              flex: 1;
+              display: flex;
+              flex-direction: column;
+              gap: 0.5rem;
+
+              label {
+                font-size: 0.9rem;
+                color: $text-color;
+              }
+
+              .form-control {
+                padding: 0.75rem;
+                border-radius: 0.5rem;
+                background-color: $active-item-color;
+                border: 1px solid rgba($border-color, 0.2);
+                color: $text-color;
+                font-size: 0.95rem;
+                font-family: inherit;
+
+                &:focus {
+                  outline: none;
+                  border-color: $active-control-color;
+                  box-shadow: 0 0 0 2px rgba($active-control-color, 0.2);
+                }
+              }
+
+              &.checkbox-group {
+                .checkbox-label {
+                  display: flex;
+                  align-items: center;
+                  gap: 0.75rem;
+                  cursor: pointer;
+
+                  input[type="checkbox"] {
+                    width: 18px;
+                    height: 18px;
+                    cursor: pointer;
+                  }
+
+                  span {
+                    font-size: 0.95rem;
+                  }
+                }
+              }
+            }
+          }
+
+          .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba($border-color, 0.1);
+
+            button {
+              padding: 0.75rem 1.5rem;
+              border-radius: 0.5rem;
+              font-weight: 500;
+              cursor: pointer;
+              transition: all 0.2s;
+              border: none;
+              font-size: 0.95rem;
+
+              &.btn-primary {
+                background-color: $active-control-color;
+                color: white;
+
+                &:hover {
+                  background-color: $active-control-color;
+                  transform: translateY(-2px);
+                }
+
+                &:active {
+                  transform: translateY(0);
+                }
+              }
+
+              &.btn-secondary {
+                background-color: rgba($text-color, 0.1);
+                color: $text-color;
+
+                &:hover {
+                  background-color: rgba($text-color, 0.15);
+                }
+              }
+
+              &.btn-accent {
+                background-color: $approved-color;
+                color: white;
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                padding: 0.75rem 1.25rem;
+
+                &:hover {
+                  background-color: $approved-color;
+                  transform: translateY(-2px);
+                }
+
+                &:active {
+                  transform: translateY(0);
+                }
+
+                mat-icon {
+                  font-size: 1.25rem;
+                  width: 1.25rem;
+                  height: 1.25rem;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// Responsive styles
+@media screen and (max-width: 1024px) {
+  .settings-container {
+    .settings-content {
+      grid-template-columns: 1fr;
+
+      .settings-sidebar {
+        .settings-tabs {
+          display: flex;
+          overflow-x: auto;
+          white-space: nowrap;
+
+          .tab-item {
+            flex-shrink: 0;
+            border-left: none;
+            border-bottom: 3px solid transparent;
+
+            &.active {
+              border-left: none;
+              border-bottom: 3px solid $active-control-color;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .settings-container {
+    padding: 0.75rem;
+
+    .settings-panel {
+      .settings-section {
+        .settings-form {
+          .form-row {
+            &.two-columns {
+              grid-template-columns: 1fr;
+            }
+
+            .form-actions {
+              flex-direction: column;
+              width: 100%;
+
+              button {
+                width: 100%;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .settings-container {
+    .settings-content {
+      .settings-sidebar {
+        .settings-tabs {
+          .tab-item {
+            padding: 0.75rem;
+
+            span {
+              display: none;
+            }
+          }
+        }
+      }
+
+      .settings-panel {
+        padding: 1rem;
+
+        .settings-section {
+          .settings-form {
+            .form-actions {
+              button {
+                padding: 0.75rem 1rem;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

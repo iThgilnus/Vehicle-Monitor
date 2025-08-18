@@ -1,0 +1,172 @@
+<div class="blacklist-container">
+  <div class="blacklist-header">
+    <h1>Vehicle Blacklist</h1>
+  </div>
+
+  <!-- Add/Edit Form Section -->
+  <div class="blacklist-form-section">
+    <div class="section-header">
+      <h2>{{isEditing ? 'Edit Blacklist Entry' : 'Add New Vehicle to Blacklist'}}</h2>
+    </div>
+
+    <form [formGroup]="entryForm" (ngSubmit)="submitForm()" class="blacklist-form">
+      <div class="form-row two-column">
+        <div class="form-group">
+          <label for="license_plate">License Plate *</label>
+          <input 
+            type="text" 
+            id="license_plate" 
+            formControlName="license_plate" 
+            class="form-control"
+            placeholder="E.g., ABC-123.45">
+          <div class="form-error" *ngIf="entryForm.get('license_plate')?.invalid && entryForm.get('license_plate')?.touched">
+            License plate is required
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="vehicle_type">Vehicle Type *</label>
+          <select id="vehicle_type" formControlName="vehicle_type" class="form-control">
+            <option value="">Select a type</option>
+            <option value="Car">Car</option>
+            <option value="Motorcycle">Motorcycle</option>
+            <option value="Truck">Truck</option>
+            <option value="Bus">Bus</option>
+            <option value="Other">Other</option>
+          </select>
+          <div class="form-error" *ngIf="entryForm.get('vehicle_type')?.invalid && entryForm.get('vehicle_type')?.touched">
+            Vehicle type is required
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row two-column">
+        <div class="form-group">
+          <label for="ban_level">Ban Level *</label>
+          <select id="ban_level" formControlName="ban_level" class="form-control">
+            <option value="Warning">Warning</option>
+            <option value="Ban">Ban</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="ban_start_date">Ban Start Date *</label>
+          <input type="date" id="ban_start_date" formControlName="ban_start_date" class="form-control">
+        </div>
+      </div>
+
+      <div class="form-row two-column">
+        <div class="form-group">
+          <label for="notes">Notes</label>
+          <textarea 
+            id="notes" 
+            formControlName="notes" 
+            class="form-control" 
+            rows="3" 
+            placeholder="Optional notes about this vehicle or ban reasons"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="ban_expiry">Ban Expiry Date</label>
+          <input type="date" id="ban_expiry" formControlName="ban_expiry" class="form-control">
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="btn-secondary" (click)="resetForm()">
+          {{isEditing ? 'Cancel' : 'Clear'}}
+        </button>
+        <button type="submit" class="btn-primary" [disabled]="entryForm.invalid">
+          {{isEditing ? 'Update Entry' : 'Add to Blacklist'}}
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- List Section -->
+  <div class="blacklist-list-section">
+    <div class="section-header">
+      <h2>Blacklist Entries</h2>
+
+      <div class="filters-row">
+        <div class="search-box">
+          <mat-icon>search</mat-icon>
+          <input 
+            type="text" 
+            placeholder="Search blacklist..." 
+            (input)="searchEntries($event)">
+        </div>
+
+        <div class="status-filters">
+          <button 
+            class="filter-button" 
+            [class.active]="filterStatus === 'all'"
+            (click)="filterByStatus('all')">
+            All
+          </button>
+          <button 
+            class="filter-button warning" 
+            [class.active]="filterStatus === 'warning'"
+            (click)="filterByStatus('warning')">
+            Warning
+          </button>
+          <button 
+            class="filter-button denied" 
+            [class.active]="filterStatus === 'ban'"
+            (click)="filterByStatus('ban')">
+            Ban
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="blacklist-table-container">
+      <table class="blacklist-table">
+        <thead>
+          <tr>
+            <th>License Plate</th>
+            <th>Vehicle Type</th>
+            <th>Ban Level</th>
+            <th>Notes</th>
+            <th>Ban Start Date</th>
+            <th>Ban Expiry Date</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let entry of filteredEntries">
+            <td class="license-plate">{{entry.license_plate}}</td>
+            <td>{{entry.vehicle_type}}</td>
+            <td>
+              <span class="status-badge" [ngClass]="getBanLevelClass(entry.ban_level)">
+                {{entry.ban_level | titlecase}}
+              </span>
+            </td>
+            <td class="notes-cell">
+              <span class="truncate-text">{{entry.notes || 'No notes'}}</span>
+            </td>
+            <td>{{formatDate(entry.ban_start_date)}}</td>
+            <td [class.expired]="isExpired(entry.ban_expiry)">
+              {{formatDate(entry.ban_expiry)}}
+              <span *ngIf="isExpired(entry.ban_expiry)" class="expired-tag">EXPIRED</span>
+            </td>
+            <td class="actions-cell">
+              <button class="icon-button" (click)="editEntry(entry)">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button class="icon-button delete" (click)="deleteEntry(entry)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="no-results" *ngIf="filteredEntries.length === 0">
+        <mat-icon>playlist_add_check</mat-icon>
+        <p>No blacklist entries found matching your search criteria.</p>
+      </div>
+    </div>
+  </div>
+</div>
+

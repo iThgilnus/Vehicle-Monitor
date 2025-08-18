@@ -1,0 +1,453 @@
+// Variables for color scheme
+$background-color: #151921;
+$card-bg: #1e2530;
+$text-color: #e2e8f0;
+$border-color: #2d3748;
+$primary-color: #3182ce;
+$success-color: #38a169;
+$warning-color: #d69e2e;
+$danger-color: #e53e3e;
+
+.dashboard-content {
+  display: grid;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  max-width: 1400px;
+  margin: 0 auto;
+
+  // Stats cards
+  .stats-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1rem;
+
+    .stat-card {
+      background-color: $card-bg;
+      border-radius: 0.5rem;
+      padding: 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .stat-info {
+        .stat-title {
+          font-size: 0.875rem;
+          color: rgba($text-color, 0.7);
+          margin-bottom: 0.5rem;
+        }
+
+        .stat-number {
+          font-size: 1.5rem;
+          font-weight: 600;
+          color: $text-color;
+        }
+
+        .stat-details {
+          font-size: 0.75rem;
+          color: rgba($text-color, 0.6);
+          margin-top: 0.25rem;
+
+          .in { color: $success-color; }
+          .out { color: $warning-color; }
+        }
+      }
+
+      .stat-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba($primary-color, 0.1);
+        color: $primary-color;
+
+        &.vehicles { background-color: rgba($primary-color, 0.1); color: $primary-color; }
+        &.gates { background-color: rgba($warning-color, 0.1); color: $warning-color; }
+        &.cameras { background-color: rgba($success-color, 0.1); color: $success-color; }
+        &.traffic { background-color: rgba($danger-color, 0.1); color: $danger-color; }
+      }
+    }
+  }
+
+  // Date Picker
+  .date-picker {
+    margin-bottom: 1rem;
+    
+    label {
+      margin-right: 0.5rem;
+      color: $text-color;
+    }
+
+    input[type="date"] {
+      background-color: $card-bg;
+      border: 1px solid $border-color;
+      color: $text-color;
+      padding: 0.5rem;
+      border-radius: 0.25rem;
+    }
+  }
+
+  // Gate traffic styles
+  .gate-traffic-header {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    
+    h3 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: $text-color;
+    }
+    
+    .date-picker {
+      display: flex;
+      align-items: center;
+      background-color: $card-bg;
+      padding: 0.5rem;
+      border-radius: 4px;
+      
+      label {
+        margin-right: 0.5rem;
+        color: $text-color;
+      }
+  
+      input[type="date"] {
+        background-color: rgba($text-color, 0.1);
+        border: 1px solid $border-color;
+        color: $text-color;
+        padding: 0.5rem;
+        border-radius: 0.25rem;
+      }
+    }
+  }
+  
+  .gate-section {
+    grid-column: 1 / -1;
+    background-color: $card-bg;
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    
+    .gate-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      border-bottom: 1px solid rgba($border-color, 0.2);
+      padding-bottom: 0.75rem;
+      
+      h3 {
+        font-size: 1.1rem;
+        font-weight: 500;
+        color: $text-color;
+      }
+      
+      .gate-stats {
+        display: flex;
+        gap: 1rem;
+        
+        .gate-stat {
+          padding: 0.25rem 0.75rem;
+          border-radius: 4px;
+          background-color: rgba($text-color, 0.1);
+          font-size: 0.875rem;
+          
+          &:nth-child(1) {
+            background-color: rgba($success-color, 0.1);
+            color: $success-color;
+          }
+          
+          &:nth-child(2) {
+            background-color: rgba($warning-color, 0.1);
+            color: $warning-color;
+          }
+        }
+      }
+    }
+    
+    .camera-charts {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+      gap: 1.5rem;
+      
+      .chart-card {
+        background-color: rgba($text-color, 0.03);
+        border-radius: 0.5rem;
+        padding: 1rem;
+        
+        h4 {
+          margin-bottom: 0.75rem;
+          font-size: 0.95rem;
+          font-weight: 500;
+          color: rgba($text-color, 0.85);
+          text-align: center;
+        }
+      }
+    }
+  }
+
+  // Charts container
+  .charts-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1rem;
+  
+    .chart-card {
+      background-color: $card-bg;
+      border-radius: 0.5rem;
+      padding: 1.5rem;
+  
+      h3 {
+        margin-bottom: 1rem;
+        font-size: 1rem;
+        font-weight: 700;
+        color: $text-color;
+      }
+  
+      // Updated chart styling to use $text-color for all text elements
+      ::ng-deep .ngx-charts {
+        text {
+          fill: $text-color !important;
+          font-size: 14px !important;
+          font-weight: bold;
+        }
+  
+        .axis-label {
+          fill: $text-color !important;
+          font-weight: bold;
+        }
+  
+        .axis-tick text {
+          fill: $text-color !important;
+          font-size: 13px;
+          font-weight: bold;
+        }
+  
+        // Also ensure grid lines are visible against dark background
+        .grid-panel.odd rect {
+          fill: rgba(255, 255, 255, 0.05);
+        }
+      }
+    }
+  }
+
+  // Recent activity and System Logs
+  .recent-activity {
+    background-color: $card-bg;
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    overflow-x: auto;
+
+    h3 {
+      margin-bottom: 1rem;
+      font-size: 1rem;
+      font-weight: 500;
+      color: $text-color;
+    }
+
+    .activity-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      
+      th, td {
+        padding: 0.75rem 1rem;
+        text-align: left;
+      }
+
+      th {
+        font-weight: 500;
+        color: rgba($text-color, 0.7);
+        font-size: 0.875rem;
+        border-bottom: 1px solid $border-color;
+      }
+
+      td {
+        font-size: 0.875rem;
+        border-bottom: 1px solid rgba($border-color, 0.5);
+      }
+
+      .status-badge {
+        padding: 0.25rem 0.5rem;
+        border-radius: 1rem;
+        font-size: 0.75rem;
+        font-weight: 500;
+        
+        &.approved {
+          background-color: rgba($success-color, 0.1);
+          color: $success-color;
+        }
+        
+        &.warning {
+          background-color: rgba($warning-color, 0.1);
+          color: $warning-color;
+        }
+      }
+    }
+  }
+
+  // System Notifications
+  .reminders-section {
+    h3 {
+      margin-bottom: 1rem;
+      font-size: 1rem;
+      font-weight: 500;
+      color: $text-color;
+    }
+    
+    .reminder-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1rem;
+      
+      .reminder-card {
+        background-color: $card-bg;
+        border-radius: 0.5rem;
+        padding: 1.25rem;
+        display: flex;
+        align-items: flex-start;
+        
+        .reminder-icon {
+          margin-right: 1rem;
+          width: 36px;
+          height: 36px;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          
+          &.warning {
+            background-color: rgba($warning-color, 0.1);
+            color: $warning-color;
+          }
+          
+          &.info {
+            background-color: rgba($primary-color, 0.1);
+            color: $primary-color;
+          }
+        }
+        
+        .reminder-content {
+          flex-grow: 1;
+          
+          h4 {
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+            color: $text-color;
+          }
+          
+          p {
+            color: rgba($text-color, 0.7);
+            font-size: 0.875rem;
+            margin-bottom: 0.75rem;
+          }
+          
+          .reminder-actions {
+            display: flex;
+            gap: 0.5rem;
+            
+            .reminder-button {
+              padding: 0.35rem 0.75rem;
+              border-radius: 0.25rem;
+              font-size: 0.75rem;
+              background-color: rgba($text-color, 0.1);
+              border: none;
+              color: $text-color;
+              cursor: pointer;
+              
+              &.primary {
+                background-color: $primary-color;
+                color: white;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// Loading and Error States
+.loading-state, .error-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin: 1rem 0;
+}
+
+.loading-state .spinner {
+  animation: spin 1.5s linear infinite;
+  margin-bottom: 1rem;
+}
+
+.error-state mat-icon {
+  color: #e53935;
+  font-size: 2rem;
+  height: 2rem;
+  width: 2rem;
+  margin-bottom: 1rem;
+}
+
+.error-state button {
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  background-color: #2196f3;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+// Responsive styles
+@media screen and (max-width: 768px) {
+  .dashboard-content {
+    padding: 1rem;
+    
+    .stats-cards {
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .dashboard-content {
+    .stats-cards {
+      grid-template-columns: 1fr;
+    }
+  }
+}
+
+// Responsive adjustments
+@media screen and (max-width: 1024px) {
+  .gate-traffic-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  
+  .gate-section {
+    .gate-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.75rem;
+    }
+    
+    .camera-charts {
+      grid-template-columns: 1fr;
+    }
+  }
+}
+

@@ -1,0 +1,268 @@
+<div *ngIf="isLoading" class="loading-state">
+  <div class="spinner">
+    <mat-icon>refresh</mat-icon>
+  </div>
+  <p>Loading dashboard data...</p>
+</div>
+
+<div *ngIf="loadingError" class="error-state">
+  <mat-icon>error_outline</mat-icon>
+  <p>{{ errorMessage }}</p>
+  <button (click)="fetchDashboardData()">Try Again</button>
+</div>
+
+<div class="dashboard-content">
+  <!-- Stats Cards -->
+  <div class="stats-cards">
+    <div class="stat-card">
+      <div class="stat-info">
+        <span class="stat-title">Total Vehicles</span>
+        <div class="stat-number">{{vehicleCount}}</div>
+      </div>
+      <div class="stat-icon vehicles">
+        <mat-icon>directions_car</mat-icon>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-info">
+        <span class="stat-title">Active Gates</span>
+        <div class="stat-number">{{activeGatesCount}}</div>
+      </div>
+      <div class="stat-icon gates">
+        <mat-icon>door_front</mat-icon>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-info">
+        <span class="stat-title">Active Cameras</span>
+        <div class="stat-number">{{activeCamerasCount}}</div>
+      </div>
+      <div class="stat-icon cameras">
+        <mat-icon>videocam</mat-icon>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-info">
+        <span class="stat-title">Traffic for {{selectedDate | date:'mediumDate':'UTC+7'}}</span>
+        <div class="stat-number">{{todaysTraffic}}</div>
+        <div class="stat-details">
+          <span class="in">{{vehiclesInside}} In</span> / 
+          <span class="out">{{vehiclesLeft}} Out</span>
+        </div>
+      </div>
+      <div class="stat-icon traffic">
+        <mat-icon>traffic</mat-icon>
+      </div>
+    </div>
+  </div>
+
+  <!-- Charts Section -->
+  <div class="charts-container">
+    <!-- Gate Traffic Header -->
+    <div class="gate-traffic-header">
+      <h3>Traffic by Gate</h3>
+      <!-- Date Picker moved here for better UI organization -->
+      <div class="date-picker">
+        <label for="dateSelect">Select Date: </label>
+        <input 
+          type="date" 
+          id="dateSelect" 
+          [(ngModel)]="selectedDate" 
+          (change)="onDateChange()"
+          [max]="maxDate">
+      </div>
+    </div>
+
+    <!-- Main Gate Section -->
+    <div class="gate-section">
+      <div class="gate-header">
+        <h3>Main Gate</h3>
+        <div class="gate-stats">
+          <span class="gate-stat">IN: {{ mainGateStats.in }}</span>
+          <span class="gate-stat">OUT: {{ mainGateStats.out }}</span>
+          <span class="gate-stat">Total: {{ mainGateStats.in + mainGateStats.out }}</span>
+        </div>
+      </div>
+      
+      <div class="camera-charts">
+        <!-- Main Gate IN Camera -->
+        <div class="chart-card">
+          <h4>Main Gate Camera IN</h4>
+          <ngx-charts-line-chart
+            [view]="[cameraChartWidth, 250]"
+            [scheme]="entryColorScheme"
+            [legend]="true"
+            [showXAxisLabel]="true"
+            [showYAxisLabel]="true"
+            [xAxis]="true"
+            [yAxis]="true"
+            [xAxisLabel]="'Time'"
+            [yAxisLabel]="'Vehicles'"
+            [results]="mainGateInChartData"
+            (window:resize)="onResize($event)">
+          </ngx-charts-line-chart>
+        </div>
+        
+        <!-- Main Gate LEFT Camera -->
+        <div class="chart-card">
+          <h4>Main Gate Camera LEFT</h4>
+          <ngx-charts-line-chart
+            [view]="[cameraChartWidth, 250]"
+            [scheme]="exitColorScheme"
+            [legend]="true"
+            [showXAxisLabel]="true"
+            [showYAxisLabel]="true"
+            [xAxis]="true"
+            [yAxis]="true"
+            [xAxisLabel]="'Time'"
+            [yAxisLabel]="'Vehicles'"
+            [results]="mainGateLeftChartData"
+            (window:resize)="onResize($event)">
+          </ngx-charts-line-chart>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Secondary Gate Section -->
+    <div class="gate-section">
+      <div class="gate-header">
+        <h3>Secondary Gate</h3>
+        <div class="gate-stats">
+          <span class="gate-stat">IN: {{ secondaryGateStats.in }}</span>
+          <span class="gate-stat">OUT: {{ secondaryGateStats.out }}</span>
+          <span class="gate-stat">Total: {{ secondaryGateStats.in + secondaryGateStats.out }}</span>
+        </div>
+      </div>
+      
+      <div class="camera-charts">
+        <!-- Secondary Gate IN Camera -->
+        <div class="chart-card">
+          <h4>Secondary Gate Camera IN</h4>
+          <ngx-charts-line-chart
+            [view]="[cameraChartWidth, 250]"
+            [scheme]="entryColorScheme"
+            [legend]="true"
+            [showXAxisLabel]="true"
+            [showYAxisLabel]="true"
+            [xAxis]="true"
+            [yAxis]="true"
+            [xAxisLabel]="'Time'"
+            [yAxisLabel]="'Vehicles'"
+            [results]="secondaryGateInChartData"
+            (window:resize)="onResize($event)">
+          </ngx-charts-line-chart>
+        </div>
+        
+        <!-- Secondary Gate LEFT Camera -->
+        <div class="chart-card">
+          <h4>Secondary Gate Camera LEFT</h4>
+          <ngx-charts-line-chart
+            [view]="[cameraChartWidth, 250]"
+            [scheme]="exitColorScheme"
+            [legend]="true"
+            [showXAxisLabel]="true"
+            [showYAxisLabel]="true"
+            [xAxis]="true"
+            [yAxis]="true"
+            [xAxisLabel]="'Time'"
+            [yAxisLabel]="'Vehicles'"
+            [results]="secondaryGateLeftChartData"
+            (window:resize)="onResize($event)">
+          </ngx-charts-line-chart>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recent Vehicle Activity -->
+  <div class="recent-activity">
+    <h3>Recent Vehicle Activity</h3>
+    <table class="activity-table">
+      <thead>
+        <tr>
+          <th>License Plate</th>
+          <th>Type</th>
+          <th>Time</th>
+          <th>Detect by Camera</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngIf="recentActivity.length === 0">
+          <td colspan="5">No recent activity for this date</td>
+        </tr>
+        <tr *ngFor="let vehicle of recentActivity" [class]="vehicle.status === 'In' ? 'approved' : 'warning'">
+          <td>{{vehicle.license_plate}}</td>
+          <td>{{vehicle.vehicle_type}}</td>
+          <td>{{formatTime(vehicle.entry_time)}}</td>
+          <td>{{vehicle.location}}</td>
+          <td>
+            <span class="status-badge" [class.approved]="vehicle.status === 'In'" [class.warning]="vehicle.status === 'Left'">
+              {{vehicle.status}}
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Recent System Logs -->
+  <div class="recent-activity">
+    <h3>System Logs</h3>
+    <table class="activity-table">
+      <thead>
+        <tr>
+          <th>Time</th>
+          <th>Event Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngIf="recentLogs.length === 0">
+          <td colspan="3">No logs for this date</td>
+        </tr>
+        <tr *ngFor="let log of recentLogs">
+          <td>{{formatTime(log.timestamp)}} {{formatDate(log.timestamp)}}</td>
+          <td>{{log.event_type}}</td>
+          <td>{{log.description}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- System Notifications -->
+  <div class="reminders-section">
+    <h3>System Notifications</h3>
+    <div class="reminder-cards">
+      <div class="reminder-card">
+        <div class="reminder-icon warning">
+          <mat-icon>warning</mat-icon>
+        </div>
+        <div class="reminder-content">
+          <h4>Camera 3 Maintenance</h4>
+          <p>Scheduled maintenance in 2 days</p>
+          <div class="reminder-actions">
+            <button class="reminder-button">Dismiss</button>
+            <button class="reminder-button primary">Details</button>
+          </div>
+        </div>
+      </div>
+      <div class="reminder-card">
+        <div class="reminder-icon info">
+          <mat-icon>info</mat-icon>
+        </div>
+        <div class="reminder-content">
+          <h4>System Update</h4>
+          <p>New features available</p>
+          <div class="reminder-actions">
+            <button class="reminder-button">Later</button>
+            <button class="reminder-button primary">Update Now</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

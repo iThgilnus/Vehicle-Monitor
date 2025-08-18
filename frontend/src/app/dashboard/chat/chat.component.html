@@ -1,0 +1,46 @@
+<div class="chat-container">
+  <div class="chat-header">
+    <h2>AI Assistant</h2>
+    <button mat-icon-button (click)="clearChat()" matTooltip="Clear chat history">
+      <mat-icon>delete_outline</mat-icon>
+    </button>
+  </div>
+
+  <div class="messages-container" #chatContainer>
+    <div *ngFor="let message of chatMessages" class="message" [ngClass]="{'user': message.sender === 'user', 'ai': message.sender === 'ai'}">
+      <div class="message-avatar">
+        <mat-icon *ngIf="message.sender === 'user'">person</mat-icon>
+        <mat-icon *ngIf="message.sender === 'ai'">smart_toy</mat-icon>
+      </div>
+      <div class="message-content">
+        <div class="message-text">{{ message.content }}</div>
+        <div class="message-time">{{ message.timestamp | date:'short' }}</div>
+      </div>
+    </div>
+
+    <!-- Loading indicator -->
+    <div class="message ai" *ngIf="isLoading">
+      <div class="message-avatar">
+        <mat-icon>smart_toy</mat-icon>
+      </div>
+      <div class="message-content">
+        <div class="loading-indicator">
+          <mat-spinner diameter="20"></mat-spinner>
+          <span>Thinking...</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="chat-input">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Ask a question</mat-label>
+      <input style="margin-left: 10px;" matInput [(ngModel)]="userMessage" (keyup.enter)="sendMessage()" placeholder="E.g., How many vehicles are currently inside?">
+      <mat-icon matSuffix>question_answer</mat-icon>
+    </mat-form-field>
+    <button mat-raised-button color="primary" (click)="sendMessage()" [disabled]="!userMessage.trim() || isLoading">
+      <mat-icon>send</mat-icon>
+      Send
+    </button>
+  </div>
+</div>

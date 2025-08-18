@@ -1,0 +1,16 @@
+/* You can add global styles to this file, and also import other style files */
+:root {
+  --custom-dark-bg: #151921;
+  --custom-sidebar-bg: #1a1f2c;
+  --custom-text: #fff;
+}
+
+* {
+    font-family: "Kanit", system-ui;
+}
+html, body { height: 100%; }
+body { 
+  margin: 0; 
+  background-color: var(--custom-dark-bg);
+  color: var(--custom-text);
+}

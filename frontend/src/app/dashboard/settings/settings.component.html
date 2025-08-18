@@ -1,0 +1,270 @@
+<div class="settings-container">
+  <div class="settings-header">
+    <h1>Settings</h1>
+  </div>
+  
+  <div class="settings-content">
+    <div class="settings-sidebar">
+      <div class="settings-tabs">
+        <div 
+          class="tab-item" 
+          [class.active]="activeTab === 'general'"
+          (click)="setActiveTab('general')">
+          <mat-icon>settings</mat-icon>
+          <span>General</span>
+        </div>
+        
+        <div 
+          class="tab-item" 
+          [class.active]="activeTab === 'notifications'"
+          (click)="setActiveTab('notifications')">
+          <mat-icon>notifications</mat-icon>
+          <span>Notifications</span>
+        </div>
+        
+        <div 
+          class="tab-item" 
+          [class.active]="activeTab === 'database'"
+          (click)="setActiveTab('database')">
+          <mat-icon>storage</mat-icon>
+          <span>Database</span>
+        </div>
+        
+        <div 
+          class="tab-item" 
+          [class.active]="activeTab === 'camera'"
+          (click)="setActiveTab('camera')">
+          <mat-icon>videocam</mat-icon>
+          <span>Camera Settings</span>
+        </div>
+      </div>
+    </div>
+    
+    <div class="settings-panel">
+      <!-- General Settings -->
+      <div class="settings-section" *ngIf="activeTab === 'general'">
+        <h2>General Settings</h2>
+        <p class="setting-description">Configure basic system settings.</p>
+        
+        <form [formGroup]="generalSettingsForm" class="settings-form">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="siteName">System Name</label>
+              <input type="text" id="siteName" formControlName="siteName" class="form-control">
+            </div>
+          </div>
+          
+          <div class="form-row two-columns">
+            <div class="form-group">
+              <label for="language">Language</label>
+              <select id="language" formControlName="language" class="form-control">
+                <option value="en">English</option>
+                <option value="vi">Vietnamese</option>
+                <option value="fr">French</option>
+                <option value="de">German</option>
+              </select>
+            </div>
+            
+            <div class="form-group">
+              <label for="timeZone">Time Zone</label>
+              <select id="timeZone" formControlName="timeZone" class="form-control">
+                <option value="UTC+7">UTC+7 (Vietnam)</option>
+                <option value="UTC-8">UTC-8 (Pacific Time)</option>
+                <option value="UTC-5">UTC-5 (Eastern Time)</option>
+                <option value="UTC+0">UTC+0 (London)</option>
+                <option value="UTC+1">UTC+1 (Central Europe)</option>
+              </select>
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label for="dateFormat">Date Format</label>
+              <select id="dateFormat" formControlName="dateFormat" class="form-control">
+                <option value="MM/DD/YYYY">MM/DD/YYYY</option>
+                <option value="DD/MM/YYYY">DD/MM/YYYY</option>
+                <option value="YYYY-MM-DD">YYYY-MM-DD</option>
+              </select>
+            </div>
+          </div>
+          
+          <div class="form-actions">
+            <button type="button" class="btn-secondary" (click)="resetSettings('general')">Reset to Default</button>
+            <button type="button" class="btn-primary" (click)="saveSettings('general')">Save Changes</button>
+          </div>
+        </form>
+      </div>
+      
+      <!-- Notification Settings -->
+      <div class="settings-section" *ngIf="activeTab === 'notifications'">
+        <h2>Notification Settings</h2>
+        <p class="setting-description">Configure how and when you receive system notifications.</p>
+        
+        <form [formGroup]="notificationSettingsForm" class="settings-form">
+          <div class="form-row">
+            <div class="form-group checkbox-group">
+              <label class="checkbox-label">
+                <input type="checkbox" formControlName="emailNotifications">
+                <span>Email Notifications</span>
+              </label>
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group checkbox-group">
+              <label class="checkbox-label">
+                <input type="checkbox" formControlName="pushNotifications">
+                <span>Push Notifications</span>
+              </label>
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group checkbox-group">
+              <label class="checkbox-label">
+                <input type="checkbox" formControlName="smsNotifications">
+                <span>SMS Notifications</span>
+              </label>
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label for="notificationEmail">Notification Email</label>
+              <input type="email" id="notificationEmail" formControlName="notificationEmail" class="form-control">
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group checkbox-group">
+              <label class="checkbox-label">
+                <input type="checkbox" formControlName="alertOnUnknownVehicle">
+                <span>Alert on Unknown Vehicles</span>
+              </label>
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group checkbox-group">
+              <label class="checkbox-label">
+                <input type="checkbox" formControlName="alertOnSystemIssues">
+                <span>Alert on System Issues</span>
+              </label>
+            </div>
+          </div>
+          
+          <div class="form-actions">
+            <button type="button" class="btn-secondary" (click)="resetSettings('notifications')">Reset to Default</button>
+            <button type="button" class="btn-primary" (click)="saveSettings('notifications')">Save Changes</button>
+          </div>
+        </form>
+      </div>
+      
+      <!-- Database Settings -->
+      <div class="settings-section" *ngIf="activeTab === 'database'">
+        <h2>Database Settings</h2>
+        <p class="setting-description">Configure database backup and storage settings.</p>
+        
+        <form [formGroup]="databaseSettingsForm" class="settings-form">
+          <div class="form-row">
+            <div class="form-group checkbox-group">
+              <label class="checkbox-label">
+                <input type="checkbox" formControlName="backupEnabled">
+                <span>Automatic Backup Enabled</span>
+              </label>
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label for="backupFrequency">Backup Frequency</label>
+              <select id="backupFrequency" formControlName="backupFrequency" class="form-control">
+                <option *ngFor="let freq of backupFrequencies" [value]="freq.value">{{freq.label}}</option>
+              </select>
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label for="retentionPeriod">Data Retention Period (days)</label>
+              <input type="number" id="retentionPeriod" formControlName="retentionPeriod" class="form-control">
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label for="backupLocation">Backup Storage Location</label>
+              <select id="backupLocation" formControlName="backupLocation" class="form-control">
+                <option value="cloud-storage">Cloud Storage</option>
+                <option value="local-storage">Local Storage</option>
+                <option value="network-drive">Network Drive</option>
+              </select>
+            </div>
+          </div>
+          
+          <div class="form-row manual-backup">
+            <button type="button" class="btn-accent" (click)="runDatabaseBackup()">
+              <mat-icon>backup</mat-icon>
+              Run Manual Backup Now
+            </button>
+          </div>
+          
+          <div class="form-actions">
+            <button type="button" class="btn-secondary" (click)="resetSettings('database')">Reset to Default</button>
+            <button type="button" class="btn-primary" (click)="saveSettings('database')">Save Changes</button>
+          </div>
+        </form>
+      </div>
+      
+      <!-- Camera Settings -->
+      <div class="settings-section" *ngIf="activeTab === 'camera'">
+        <h2>Camera Settings</h2>
+        <p class="setting-description">Configure default camera and recording settings.</p>
+        
+        <form [formGroup]="cameraSettingsForm" class="settings-form">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="defaultRecordingQuality">Default Recording Quality</label>
+              <select id="defaultRecordingQuality" formControlName="defaultRecordingQuality" class="form-control">
+                <option value="480p">480p</option>
+                <option value="720p">720p</option>
+                <option value="1080p">1080p</option>
+                <option value="4k">4K</option>
+              </select>
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group checkbox-group">
+              <label class="checkbox-label">
+                <input type="checkbox" formControlName="motionDetection">
+                <span>Enable Motion Detection</span>
+              </label>
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label for="recordingRetention">Recording Retention Period (days)</label>
+              <input type="number" id="recordingRetention" formControlName="recordingRetention" class="form-control">
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group checkbox-group">
+              <label class="checkbox-label">
+                <input type="checkbox" formControlName="nightMode">
+                <span>Enable Night Vision Mode</span>
+              </label>
+            </div>
+          </div>
+          
+          <div class="form-actions">
+            <button type="button" class="btn-secondary" (click)="resetSettings('camera')">Reset to Default</button>
+            <button type="button" class="btn-primary" (click)="saveSettings('camera')">Save Changes</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
