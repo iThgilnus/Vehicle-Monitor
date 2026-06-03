@@ -824,28 +824,6 @@ ws://localhost:8000/ws/signaling/          # WebRTC signaling + detection data
 - Stereo audio disabled (surveillance, not music)
 - Video stall detection + auto-recovery on client
 
----
-
-## 🧪 Testing
-
-```bash
-# Backend unit tests
-cd backend
-python manage.py test
-
-# Frontend unit tests
-cd frontend
-ng test
-
-# Frontend E2E tests
-ng e2e
-
-# Generate fake data for testing
-python generate_fake_data.py
-# → Creates 500 vehicles, 2 gates, 4 cameras, logs, reports
-```
-
----
 
 ## 🔮 Roadmap
 
