@@ -1,6 +1,8 @@
+
+
 <h1 align="center">
-  Vehicle Monitor<br/>
-  <sub>Hệ thống kiểm soát phương tiện ra vào cổng</sub>
+  🚗 Vehicle Monitor<br/>
+  <sub>Intelligent Parking & Traffic Surveillance Platform</sub>
 </h1>
 
 <p align="center">
@@ -32,7 +34,7 @@
 
 <!-- HERO BANNER -->
 <p align="center">
-  <img src="docs/images/dashboard-preview.png" alt="Dashboard Preview" width="90%" />
+  <img src="docs/live-monitoring.png" alt="Live Monitoring Preview" width="90%" />
 </p>
 <p align="center"><sub>📸 <i>Live Monitoring — Phát hiện phương tiện real-time qua camera IP với AI bounding boxes, nhận dạng biển số và cảnh báo xe vi phạm</i></sub></p>
 
@@ -55,6 +57,7 @@
 - [🔌 API Documentation](#-api-documentation)
 - [📡 Real-time Communication](#-real-time-communication)
 - [🗺️ Detection Models](#️-detection-models)
+- [🧪 Testing](#-testing)
 - [🔮 Roadmap](#-roadmap)
 - [📄 License](#-license)
 
@@ -216,13 +219,13 @@ Hệ thống tích hợp **4 mô hình YOLO** chạy trên GPU, truyền video q
 
 ```
 ┌──────────────────────────────────────────────────────────────────────────────────┐
-│                             DETECTION SERVICE (Singleton, GPU)                   │
+│                         🎯 DETECTION SERVICE (Singleton, GPU)                    │
 │                                                                                  │
 │  ┌─────────┐    ┌──────────┐    ┌──────────────┐    ┌─────────────────────────┐  │
-│  │  RTSP   │    │  Frame   │    │   YOLOv8     │    │    Advanced Tracker     │  │
-│  │ Camera  │───►│ Capture  │───►│  Vehicle     │───►│   (IoU + Distance +     │  │
-│  │ 2688×   │    │ OpenCV   │    │  Detection   │    │    Velocity Predict)    │  │
-│  │ 1520    │    │ H.265    │    │  (GPU)       │    │                         │  │
+│  │  RTSP   │    │  Frame   │    │   YOLOv8     │    │   Advanced Tracker     │  │
+│  │ Camera  │───►│ Capture  │───►│  Vehicle     │───►│  (IoU + Distance +     │  │
+│  │ 2688×   │    │ OpenCV   │    │  Detection   │    │   Velocity Predict)    │  │
+│  │ 1520    │    │ H.265    │    │  (GPU)       │    │                        │  │
 │  └─────────┘    └──────────┘    └──────────────┘    └───────────┬─────────────┘  │
 │                                                                 │                │
 │                                                     ┌───────────▼─────────────┐  │
@@ -278,22 +281,22 @@ Hệ thống tích hợp **4 mô hình YOLO** chạy trên GPU, truyền video q
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────┐
-│                             CLIENT LAYER                                │
+│                          🌐 CLIENT LAYER                                │
 │                                                                         │
 │  ┌───────────────────────────────────────────────────────────────────┐  │
 │  │                      Angular 19 SPA                               │  │
 │  │                                                                   │  │
-│  │  ┌──────────┐  ┌──────────┐  ┌───────────┐  ┌────────────────┐    │  │
-│  │  │  Video   │  │  Dash    │  │  Fleet    │  │      AI Chat   │    │  │
-│  │  │ Monitor  │  │  board   │  │  Manage   │  │   (Gemini)     │    │  │
-│  │  │ (WebRTC  │  │(ngx-char │  │ (Angular  │  │                │    │  │
-│  │  │ +Canvas) │  │ ts)      │  │ Material) │  │                │    │  │
-│  │  └────┬─────┘  └────┬─────┘  └─────┬─────┘  └──────┬─────────┘    │  │
-│  │       │              │              │               │             │  │
-│  │  ┌────▼──────────────▼──────────────▼───────────────▼─────────┐   │  │
-│  │  │              Services Layer (HttpClient + RxJS)            │   │  │
-│  │  │     REST API    ←──→    WebSocket (WebRTC Signaling)       │   │  │
-│  │  └──────────────────────────┬─────────────────────────────────┘   │  │
+│  │  ┌──────────┐  ┌──────────┐  ┌───────────┐  ┌────────────────┐  │  │
+│  │  │ 📹 Video │  │ 📊 Dash- │  │ 🚗 Fleet  │  │  🤖 AI Chat   │  │  │
+│  │  │ Monitor  │  │  board   │  │  Manage   │  │   (Gemini)     │  │  │
+│  │  │ (WebRTC  │  │(ngx-char │  │ (Angular  │  │                │  │  │
+│  │  │ +Canvas) │  │ ts)      │  │ Material) │  │                │  │  │
+│  │  └────┬─────┘  └────┬─────┘  └─────┬─────┘  └──────┬─────────┘  │  │
+│  │       │              │              │               │            │  │
+│  │  ┌────▼──────────────▼──────────────▼───────────────▼─────────┐  │  │
+│  │  │              Services Layer (HttpClient + RxJS)             │  │  │
+│  │  │     REST API    ←──→    WebSocket (WebRTC Signaling)       │  │  │
+│  │  └──────────────────────────┬─────────────────────────────────┘  │  │
 │  └─────────────────────────────┼─────────────────────────────────────┘  │
 └────────────────────────────────┼────────────────────────────────────────┘
                                  │
@@ -302,44 +305,44 @@ Hệ thống tích hợp **4 mô hình YOLO** chạy trên GPU, truyền video q
               ───────────────────┼───────────────────
                                  │
 ┌────────────────────────────────┼────────────────────────────────────────┐
-│                             SERVER LAYER                                │
+│                          🖥️ SERVER LAYER                                │
 │                                                                         │
 │  ┌─────────────────────────────▼──────────────────────────────────────┐ │
-│  │             Django 5 + DRF + Channels (Daphne ASGI)                │ │
+│  │             Django 5 + DRF + Channels (Daphne ASGI)               │ │
 │  │                                                                    │ │
-│  │  ┌────────────────┐  ┌──────────────────┐  ┌───────────────────┐   │ │
-│  │  │   REST API     │  │ VideoConsumer    │  │ DetectionService  │   │ │
-│  │  │                │  │ (WebSocket)      │  │ (Singleton)       │   │ │
-│  │  │ • Vehicles     │  │                  │  │                   │   │ │
-│  │  │ • Gates        │  │ • WebRTC Signal  │  │ • RTSP Capture    │   │ │
-│  │  │ • Cameras      │  │ • SDP Exchange   │  │ • YOLO Detection  │   │ │
-│  │  │ • Logs         │  │ • ICE Candidates │  │ • Object Tracking │   │ │
-│  │  │ • Reports      │  │ • Detection Push │  │ • Line Crossing   │   │ │
-│  │  │ • Blacklists   │  │                  │  │ • Plate OCR       │   │ │
-│  │  │ • System Health│  │ • Video Stream   │  │ • DB Write Queue  │   │ │
-│  │  │ • AI Chat      │  │   (aiortc)       │  │                   │   │ │
-│  │  └───────┬────────┘  └────────┬─────────┘  └────────┬──────────┘   │ │
+│  │  ┌────────────────┐  ┌──────────────────┐  ┌───────────────────┐  │ │
+│  │  │   REST API     │  │ VideoConsumer    │  │ DetectionService  │  │ │
+│  │  │                │  │ (WebSocket)      │  │ (Singleton)       │  │ │
+│  │  │ • Vehicles     │  │                  │  │                   │  │ │
+│  │  │ • Gates        │  │ • WebRTC Signal  │  │ • RTSP Capture    │  │ │
+│  │  │ • Cameras      │  │ • SDP Exchange   │  │ • YOLO Detection  │  │ │
+│  │  │ • Logs         │  │ • ICE Candidates │  │ • Object Tracking │  │ │
+│  │  │ • Reports      │  │ • Detection Push │  │ • Line Crossing   │  │ │
+│  │  │ • Blacklists   │  │                  │  │ • Plate OCR       │  │ │
+│  │  │ • System Health│  │ • Video Stream   │  │ • DB Write Queue  │  │ │
+│  │  │ • AI Chat      │  │   (aiortc)       │  │                   │  │ │
+│  │  └───────┬────────┘  └────────┬─────────┘  └────────┬──────────┘  │ │
 │  │          │                    │                      │             │ │
 │  │  ┌───────▼────────────────────▼──────────────────────▼──────────┐  │ │
 │  │  │                      DATA LAYER                              │  │ │
 │  │  │                                                              │  │ │
-│  │  │  ┌────────────┐  ┌──────────────┐  ┌──────────────────────┐  │  │ │
-│  │  │  │  MongoDB   │  │  Firebase    │  │  Google Gemini AI    │  │  │ │
-│  │  │  │  (Primary) │  │  Auth/Cloud  │  │  2.0 Flash           │  │  │ │
-│  │  │  │            │  │              │  │                      │  │  │ │
-│  │  │  │ vehicles   │  │ Credentials  │  │  Smart Analysis      │  │  │ │
-│  │  │  │ gates      │  │ & Auth       │  │  NL Query            │  │  │ │
-│  │  │  │ cameras    │  │              │  │  Context Injection   │  │  │ │
-│  │  │  │ logs       │  │              │  │                      │  │  │ │
-│  │  │  │ reports    │  │              │  │                      │  │  │ │
-│  │  │  │ blacklists │  │              │  │                      │  │  │ │
-│  │  │  └────────────┘  └──────────────┘  └──────────────────────┘  │  │ │
+│  │  │  ┌────────────┐  ┌──────────────┐  ┌──────────────────────┐ │  │ │
+│  │  │  │  MongoDB   │  │  Firebase    │  │  Google Gemini AI    │ │  │ │
+│  │  │  │  (Primary) │  │  Auth/Cloud  │  │  2.0 Flash           │ │  │ │
+│  │  │  │            │  │              │  │                      │ │  │ │
+│  │  │  │ vehicles   │  │ Credentials  │  │  Smart Analysis      │ │  │ │
+│  │  │  │ gates      │  │ & Auth       │  │  NL Query            │ │  │ │
+│  │  │  │ cameras    │  │              │  │  Context Injection   │ │  │ │
+│  │  │  │ logs       │  │              │  │                      │ │  │ │
+│  │  │  │ reports    │  │              │  │                      │ │  │ │
+│  │  │  │ blacklists │  │              │  │                      │ │  │ │
+│  │  │  └────────────┘  └──────────────┘  └──────────────────────┘ │  │ │
 │  │  └──────────────────────────────────────────────────────────────┘  │ │
 │  └────────────────────────────────────────────────────────────────────┘ │
 │                                                                         │
 │  ┌────────────────────────────────────────────────────────────────────┐ │
-│  │  IP CAMERAS (RTSP)                                                 │ │
-│  │  Dahua • 2688×1520 • H.265 • 20fps • TCP Transport                 │ │
+│  │  🎥 IP CAMERAS (RTSP)                                             │ │
+│  │  Dahua • 2688×1520 • H.265 • 20fps • TCP Transport               │ │
 │  └────────────────────────────────────────────────────────────────────┘ │
 └─────────────────────────────────────────────────────────────────────────┘
 ```
@@ -365,7 +368,7 @@ Hệ thống tích hợp **4 mô hình YOLO** chạy trên GPU, truyền video q
        │                    │ + Plate OCR   │                   │
        │                    └────┬──────────┘                   │
        │                         │                              │
-       │                         ├── Save to MongoDB            │
+       │                         ├── Save to MongoDB ──► 💾     │
        │                         │                              │
        │                         │── WebRTC Video ─────────────►│── Render on Canvas
        │                         │── WS Detection Data ────────►│── Draw Bounding Boxes
@@ -428,11 +431,15 @@ Hệ thống tích hợp **4 mô hình YOLO** chạy trên GPU, truyền video q
 
 ## 📸 Screenshots
 
+> 💡 **Thay thế đường dẫn ảnh bên dưới bằng screenshots thực tế của bạn**
+>
+> Tạo thư mục `docs/images/` và chụp ảnh từng trang của ứng dụng.
+
 <details>
 <summary>📹 <b>Live Video Monitoring</b> — Trang giám sát chính</summary>
 <br/>
 <p align="center">
-  <img src="docs/images/live-monitoring.png" alt="Live Monitoring" width="90%" />
+  <img src="docs/live-monitoring.png" alt="Live Monitoring" width="90%" />
 </p>
 <p align="center"><sub>
   <i>Video stream real-time từ camera IP với AI bounding boxes (xe ô tô: 🔵 xanh, xe máy: 🟠 cam), vạch đếm xe (cyan), FPS counter, và chỉ báo chất lượng mạng. Biển số xe được nhận dạng tự động khi xe vượt qua vạch đếm.</i>
@@ -443,7 +450,7 @@ Hệ thống tích hợp **4 mô hình YOLO** chạy trên GPU, truyền video q
 <summary>📊 <b>Dashboard</b> — Tổng quan & biểu đồ</summary>
 <br/>
 <p align="center">
-  <img src="docs/images/dashboard.png" alt="Dashboard" width="90%" />
+  <img src="docs/dashboard.png" alt="Dashboard" width="90%" />
 </p>
 <p align="center"><sub>
   <i>Dashboard với 4 KPI cards, 4 biểu đồ lưu lượng xe theo giờ (Main Gate IN/OUT, Secondary Gate IN/OUT) phân loại Car/Motorcycle, bảng hoạt động gần nhất, và nhật ký hệ thống. Sidebar collapsible bên trái với glassmorphism dark theme.</i>
@@ -454,7 +461,7 @@ Hệ thống tích hợp **4 mô hình YOLO** chạy trên GPU, truyền video q
 <summary>🚗 <b>Vehicle Management</b> — Quản lý phương tiện</summary>
 <br/>
 <p align="center">
-  <img src="docs/images/vehicles.png" alt="Vehicle Management" width="90%" />
+  <img src="docs/vehicles.png" alt="Vehicle Management" width="90%" />
 </p>
 <p align="center"><sub>
   <i>Danh sách phương tiện với phân trang (6/trang), bộ lọc theo trạng thái (Inside/Left/Exited), loại xe, cổng, ngày. Click vào xe để xem chi tiết trong Material Dialog.</i>
@@ -465,7 +472,7 @@ Hệ thống tích hợp **4 mô hình YOLO** chạy trên GPU, truyền video q
 <summary>🚨 <b>Blacklist Alert</b> — Cảnh báo xe vi phạm</summary>
 <br/>
 <p align="center">
-  <img src="docs/images/blacklist-alert.png" alt="Blacklist Alert" width="90%" />
+  <img src="docs/blacklist-alert.png" alt="Blacklist Alert" width="90%" />
 </p>
 <p align="center"><sub>
   <i>Khi camera phát hiện xe trong blacklist: modal toàn màn hình với hiệu ứng đỏ nhấp nháy (pulsing glow), âm thanh cảnh báo, ảnh xe, biển số, lý do bị cấm. Tự động trigger từ license plate matching real-time.</i>
@@ -476,7 +483,7 @@ Hệ thống tích hợp **4 mô hình YOLO** chạy trên GPU, truyền video q
 <summary>🤖 <b>AI Chat</b> — Chatbot phân tích dữ liệu</summary>
 <br/>
 <p align="center">
-  <img src="docs/images/ai-chat.png" alt="AI Chat" width="90%" />
+  <img src="docs/ai-chat.png" alt="AI Chat" width="90%" />
 </p>
 <p align="center"><sub>
   <i>Giao diện chat với Google Gemini 2.0 Flash. Hỏi bằng tiếng Việt tự nhiên: "Có bao nhiêu xe đã vào bãi hôm nay?", "Thống kê xe máy vs ô tô tuần này". AI truy vấn database và trả lời thông minh.</i>
@@ -487,7 +494,7 @@ Hệ thống tích hợp **4 mô hình YOLO** chạy trên GPU, truyền video q
 <summary>📈 <b>Reports</b> — Báo cáo & xuất file</summary>
 <br/>
 <p align="center">
-  <img src="docs/images/reports.png" alt="Reports" width="90%" />
+  <img src="docs/reports.png" alt="Reports" width="90%" />
 </p>
 <p align="center"><sub>
   <i>Tạo báo cáo Daily/Weekly/Monthly/Custom range. Thống kê: phân bổ loại xe, trạng thái, thời gian đỗ trung bình, giờ cao điểm, tỷ lệ lấp đầy. Export ra PDF (multi-page) hoặc Excel (6 worksheets).</i>
@@ -498,7 +505,7 @@ Hệ thống tích hợp **4 mô hình YOLO** chạy trên GPU, truyền video q
 <summary>🖥️ <b>System Health</b> — Giám sát hệ thống</summary>
 <br/>
 <p align="center">
-  <img src="docs/images/system-health.png" alt="System Health" width="90%" />
+  <img src="docs/system-health.png" alt="System Health" width="90%" />
 </p>
 <p align="center"><sub>
   <i>Giám sát real-time: CPU usage, RAM, Disk, Network latency. GPU: tên card, usage %, memory, nhiệt độ. Trạng thái services: 🟢 Online / 🟡 Degraded / 🔴 Offline. Auto-refresh mỗi 30 giây.</i>
@@ -524,7 +531,7 @@ Hệ thống tích hợp **4 mô hình YOLO** chạy trên GPU, truyền video q
 **1️⃣ Clone the repository**
 
 ```bash
-git clone https://github.com/iThgilnus/vehicle-monitor.git
+git clone https://github.com/<your-username>/vehicle-monitor.git
 cd vehicle-monitor
 ```
 
@@ -812,6 +819,28 @@ ws://localhost:8000/ws/signaling/          # WebRTC signaling + detection data
 - Stereo audio disabled (surveillance, not music)
 - Video stall detection + auto-recovery on client
 
+---
+
+## 🧪 Testing
+
+```bash
+# Backend unit tests
+cd backend
+python manage.py test
+
+# Frontend unit tests
+cd frontend
+ng test
+
+# Frontend E2E tests
+ng e2e
+
+# Generate fake data for testing
+python generate_fake_data.py
+# → Creates 500 vehicles, 2 gates, 4 cameras, logs, reports
+```
+
+---
 
 ## 🔮 Roadmap
 
@@ -861,15 +890,15 @@ Distributed under the **MIT License**. See [LICENSE](LICENSE) for more informati
 </p>
 
 <p align="center">
-  <a href="mailto:hainvm2002@gmail.com"><img src="https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=gmail&logoColor=white" alt="Email" /></a>
-  <a href="https://linkedin.com/in/hải-nguyễn-văn-minh-935364413"><img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn" /></a>
-  <a href="https://github.com/iThgilnus"><img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white" alt="GitHub" /></a>
+  <a href="mailto:your.email@example.com"><img src="https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=gmail&logoColor=white" alt="Email" /></a>
+  <a href="https://linkedin.com/in/your-profile"><img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn" /></a>
+  <a href="https://github.com/your-username"><img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white" alt="GitHub" /></a>
 </p>
 
 ---
 
 <p align="center">
-  <sub><b>Vehicle Monitor</b> — Graduation Thesis Project</sub>
+  <sub>Built with ❤️ and ☕ | <b>Vehicle Monitor</b> — Graduation Thesis Project</sub>
 </p>
 
 <p align="center">
