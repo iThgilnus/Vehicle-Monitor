@@ -1,7 +1,3 @@
-<p align="center">
-  <img src="docs/images/logo.png" alt="Vehicle Monitor Logo" width="120" />
-</p>
-
 <h1 align="center">
   Vehicle Monitor<br/>
   <sub>Hệ thống kiểm soát phương tiện ra vào cổng</sub>
@@ -59,7 +55,6 @@
 - [🔌 API Documentation](#-api-documentation)
 - [📡 Real-time Communication](#-real-time-communication)
 - [🗺️ Detection Models](#️-detection-models)
-- [🧪 Testing](#-testing)
 - [🔮 Roadmap](#-roadmap)
 - [📄 License](#-license)
 
@@ -529,7 +524,7 @@ Hệ thống tích hợp **4 mô hình YOLO** chạy trên GPU, truyền video q
 **1️⃣ Clone the repository**
 
 ```bash
-git clone https://github.com/<your-username>/vehicle-monitor.git
+git clone https://github.com/iThgilnus/vehicle-monitor.git
 cd vehicle-monitor
 ```
 
@@ -866,15 +861,15 @@ Distributed under the **MIT License**. See [LICENSE](LICENSE) for more informati
 </p>
 
 <p align="center">
-  <a href="mailto:your.email@example.com"><img src="https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=gmail&logoColor=white" alt="Email" /></a>
-  <a href="https://linkedin.com/in/your-profile"><img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn" /></a>
-  <a href="https://github.com/your-username"><img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white" alt="GitHub" /></a>
+  <a href="mailto:hainvm2002@gmail.com"><img src="https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=gmail&logoColor=white" alt="Email" /></a>
+  <a href="https://linkedin.com/in/hải-nguyễn-văn-minh-935364413"><img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn" /></a>
+  <a href="https://github.com/iThgilnus"><img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white" alt="GitHub" /></a>
 </p>
 
 ---
 
 <p align="center">
-  <sub>Built with ❤️ and ☕ | <b>Vehicle Monitor</b> — Graduation Thesis Project</sub>
+  <sub><b>Vehicle Monitor</b> — Graduation Thesis Project</sub>
 </p>
 
 <p align="center">
