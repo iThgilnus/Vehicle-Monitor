@@ -428,10 +428,6 @@ Hệ thống tích hợp **4 mô hình YOLO** chạy trên GPU, truyền video q
 
 ## 📸 Screenshots
 
-> 💡 **Thay thế đường dẫn ảnh bên dưới bằng screenshots thực tế của bạn**
->
-> Tạo thư mục `docs/images/` và chụp ảnh từng trang của ứng dụng.
-
 <details>
 <summary>📹 <b>Live Video Monitoring</b> — Trang giám sát chính</summary>
 <br/>
