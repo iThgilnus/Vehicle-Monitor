@@ -216,13 +216,13 @@ Hệ thống tích hợp **4 mô hình YOLO** chạy trên GPU, truyền video q
 
 ```
 ┌──────────────────────────────────────────────────────────────────────────────────┐
-│                         🎯 DETECTION SERVICE (Singleton, GPU)                    │
+│                         DETECTION SERVICE (Singleton, GPU)                       │
 │                                                                                  │
 │  ┌─────────┐    ┌──────────┐    ┌──────────────┐    ┌─────────────────────────┐  │
-│  │  RTSP   │    │  Frame   │    │   YOLOv8     │    │   Advanced Tracker     │  │
-│  │ Camera  │───►│ Capture  │───►│  Vehicle     │───►│  (IoU + Distance +     │  │
-│  │ 2688×   │    │ OpenCV   │    │  Detection   │    │   Velocity Predict)    │  │
-│  │ 1520    │    │ H.265    │    │  (GPU)       │    │                        │  │
+│  │  RTSP   │    │  Frame   │    │   YOLOv8     │    │   Advanced Tracker      │  │
+│  │ Camera  │───►│ Capture  │───►│  Vehicle     │───►│  (IoU + Distance +      │  │
+│  │ 2688×   │    │ OpenCV   │    │  Detection   │    │   Velocity Predict)     │  │
+│  │ 1520    │    │ H.265    │    │  (GPU)       │    │                         │  │
 │  └─────────┘    └──────────┘    └──────────────┘    └───────────┬─────────────┘  │
 │                                                                 │                │
 │                                                     ┌───────────▼─────────────┐  │
